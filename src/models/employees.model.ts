@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { EmployeeBodyType } from "../routes/schemas";
+import { EmployeeBodyType, SearchParamsType } from "../routes/schemas";
 import { Tribe } from "./tribes.model";
 
 interface EmployeeDTO {
@@ -33,8 +33,8 @@ const formatEmployeeDTO = (employee: EmployeeQueryResult): EmployeeDTO => {
   };
 };
 
-export async function getEmployees(fastify: FastifyInstance) {
-  const employees = await fastify.db
+export async function getEmployees(fastify: FastifyInstance, search: SearchParamsType) {
+  const employees = fastify.db
     .from(TABLE_NAME)
     .innerJoin("tribes", "tribes.id", "employees.tribe_id")
     .select(
@@ -46,7 +46,12 @@ export async function getEmployees(fastify: FastifyInstance) {
       "tribes.department as tribe.department"
     );
 
-  const result: EmployeeDTO[] = employees.map(formatEmployeeDTO);
+  if(search.name) employees.whereILike("employees.name",`%${search.name}%`);
+  if(search.title) employees.whereILike("employees.title",`%${search.title}%`);
+  if(search.tribe) employees.whereILike("tribes.name",`%${search.tribe}%`);
+
+  const employeesQueryResult = await employees;
+  const result: EmployeeDTO[] = employeesQueryResult.map(formatEmployeeDTO);
 
   return result;
 }
