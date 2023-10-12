@@ -1,20 +1,25 @@
 {
     "name": "employees-api",
     "scripts": {
-      "start": "ts-node src/index.ts",
-      "dev": "ts-node-dev src/index.ts"
+        "start": "ts-node src/index.ts",
+        "dev": "ts-node-dev src/index.ts",
+        "db:create": "ts-node src/db/scripts/create-db.ts",
+        "db:migrate": "ts-node src/db/scripts/migrate-db.ts",
+        "db:seed": "ts-node src/db/scripts/seed-db.ts",
+        "db:setup": "npm run db:create && npm run db:migrate && npm run db:seed"
     },
     "devDependencies": {
-      "@types/node": "^20.8.4",
-      "typescript": "^5.2.2"
+        "@types/node": "^20.8.4",
+        "typescript": "^5.2.2"
     },
     "dependencies": {
-      "@sinclair/typebox": "^0.31.17",
-      "@tsconfig/node18": "^18.2.2",
-      "fastify": "^4.23.2",
-      "fastify-plugin": "^4.5.1",
-      "ts-node": "^10.9.1",
-      "ts-node-dev": "^2.0.0"
+        "@sinclair/typebox": "^0.31.17",
+        "@tsconfig/node18": "^18.2.2",
+        "fastify": "^4.23.2",
+        "fastify-plugin": "^4.5.1",
+        "knex": "^3.0.1",
+        "mysql2": "^3.6.1",
+        "ts-node": "^10.9.1",
+        "ts-node-dev": "^2.0.0"
     }
-  }
-  
+}
