@@ -1,10 +1,14 @@
-import Fastify, { FastifyInstance } from "fastify";
+import { FastifyInstance } from "fastify";
 import knexPlugin from "./plugins/knex";
 import routes from "./routes";
 
-const fastify: FastifyInstance = Fastify();
+const env = process.env.ENVIRONMENT ?? "development";
 
-fastify.register(knexPlugin);
-fastify.register(routes);
+async function app(fastify: FastifyInstance) {
+  fastify.register(knexPlugin);
+  fastify.register(routes);
 
-export default fastify;
+  console.log(`✅ fastify instance configured (env: ${env})\n`);
+}
+
+export default app;

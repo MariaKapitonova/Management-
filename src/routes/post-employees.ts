@@ -11,8 +11,13 @@ export default function (fastify: FastifyInstance): RouteOptions {
     },
     handler: async (request, reply) => {
       const employeeBody = request.body as EmployeeBodyType;
-      const id = await employeesModel.createEmployee(fastify, employeeBody);
-      reply.code(201).send({ success: true, id });
+
+      try {
+        const id = await employeesModel.createEmployee(fastify, employeeBody);
+        reply.code(201).send({ success: true, id });
+      } catch (error) {
+        reply.code(500).send({ error: (error as Error).message });
+      }
     },
   };
 }

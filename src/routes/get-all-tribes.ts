@@ -6,8 +6,12 @@ export default function (fastify: FastifyInstance): RouteOptions {
     method: "GET",
     url: "/api/tribes",
     handler: async (request, reply) => {
-      const tribes = await tribesModel.getAllTribes(fastify);
-      reply.code(200).send(tribes);
+      try {
+        const employees = await tribesModel.getAllTribes(fastify);
+        reply.code(200).send(employees);
+      } catch (error) {
+        reply.code(500).send({ error: (error as Error).message });
+      }
     },
   };
 }

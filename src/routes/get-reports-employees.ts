@@ -6,8 +6,12 @@ export default function (fastify: FastifyInstance): RouteOptions {
     method: "GET",
     url: "/api/reports/employees",
     handler: async (request, reply) => {
-      const employees = await reportsModel.getReports(fastify);
-      reply.code(200).send(employees);
+      try {
+        const report = await reportsModel.getReports(fastify);
+        reply.code(200).send(report);
+      } catch (error) {
+        reply.code(500).send({ error: (error as Error).message });
+      }
     },
   };
 }
