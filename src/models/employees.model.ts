@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { ResourceNotFoundError } from "../errors/resource-not-found";
 import { EmployeeBodyType, SearchParamsType } from "../routes/schemas";
 import { Tribe } from "./tribes.model";
 
@@ -19,6 +20,7 @@ interface EmployeeQueryResult {
 }
 
 const TABLE_NAME = "employees";
+const EMPLOYEES_REPORT_CACHE_KEY = "employees_report";
 
 const formatEmployeeDTO = (employee: EmployeeQueryResult): EmployeeDTO => {
   return {
@@ -46,9 +48,9 @@ export async function getEmployees(fastify: FastifyInstance, search: SearchParam
       "tribes.department as tribe.department"
     );
 
-  if(search.name) employees.whereILike("employees.name",`%${search.name}%`);
-  if(search.title) employees.whereILike("employees.title",`%${search.title}%`);
-  if(search.tribe) employees.whereILike("tribes.name",`%${search.tribe}%`);
+  if(search.name) employees.whereLike("employees.name",`%${search.name}%`);
+  if(search.title) employees.whereLike("employees.title",`%${search.title}%`);
+  if(search.tribe) employees.whereLike("tribes.name",`%${search.tribe}%`);
 
   const employeesQueryResult = await employees;
   const result: EmployeeDTO[] = employeesQueryResult.map(formatEmployeeDTO);
@@ -70,6 +72,10 @@ export async function getEmployee(fastify: FastifyInstance, id: number) {
       "tribes.department as tribe.department"
     )
     .first();
+    if (!employee) {
+      const message = `No employee with id ${id} is found`;
+      throw new ResourceNotFoundError(message);
+    }
 
   return formatEmployeeDTO(employee);
 }
@@ -78,9 +84,19 @@ export async function createEmployee(
   fastify: FastifyInstance,
   employee: EmployeeBodyType
 ) {
-  return await fastify.db.from(TABLE_NAME).insert(employee);
+
+  await fastify.db.from(TABLE_NAME).insert(employee);
+  await fastify.cache.del(EMPLOYEES_REPORT_CACHE_KEY);
 }
 
 export async function deleteEmployee(fastify: FastifyInstance, id: number) {
-  await fastify.db.from(TABLE_NAME).where({ id }).del();
+  const employee = await fastify.db.from(TABLE_NAME).where({ id }).del();
+
+  if (!employee) {
+    const message = `No employee with id ${id} is found`;
+    throw new ResourceNotFoundError(message);
+  }
+  
+    await fastify.cache.del(EMPLOYEES_REPORT_CACHE_KEY);
+
 }

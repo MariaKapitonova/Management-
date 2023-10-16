@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { ResourceNotFoundError } from "../errors/resource-not-found";
 
 export interface Tribe{
     id: number;
@@ -29,6 +30,11 @@ export interface Tribe{
         "tribes.department as department"
       )
       .first();
+      
+      if (!tribes) {
+        const message = `No tribes with id ${id} is found`;
+        throw new ResourceNotFoundError(message);
+      }
         
     return tribes;
   }

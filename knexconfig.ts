@@ -19,4 +19,9 @@ export default {
       database: process.env.DB_DATABASE,
     },
   },
+  test:{
+    client: 'sqlite3',
+		connection: { filename: ':memory:' },
+		useNullAsDefault: true,
+  }
 };
