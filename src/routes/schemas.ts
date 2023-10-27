@@ -5,6 +5,7 @@ export const EmployeeBodySchema = Type.Object({
   title: Type.String(),
   tribe_id: Type.Integer(),
 });
+
 export const SearchParamsSchema = Type.Object({
   name: Type.Optional(Type.String()),
   title: Type.Optional(Type.String()),
