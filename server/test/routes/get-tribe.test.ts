@@ -3,7 +3,7 @@ import getTestFastify from "../test-fastify";
 
 const app = getTestFastify();
 
-describe("DELETE /api/employees/:id", () => {
+describe("GET /api/tribes/:id", () => {
   beforeEach(async () => {
     await generateTestDb(app);
   });
@@ -12,23 +12,25 @@ describe("DELETE /api/employees/:id", () => {
     await destroyTestDb(app);
   });
 
-  it("should delete Employee DTO by id", async () => {
+  it("should return tribe by id", async () => {
     const res = await app.inject({
-      url: "/api/employees/1",
-      method: "DELETE",
+      url: "/api/tribes/1",
+      method: "GET",
     });
 
     const response = res.json();
 
     expect(response).toEqual({
-      success: true
+      id: 1,
+      name: "Internstellar",
+      department: "Other Engineering",
     });
   });
 
-  it("should return 404 when no Employee found", async () => {
+  it("should return 404 when no tribe found", async () => {
     const res = await app.inject({
-      url: "/api/employees/420",
-      method: "DELETE",
+      url: "/api/tribes/420",
+      method: "GET",
     });
 
     const response = res.json();
@@ -36,14 +38,14 @@ describe("DELETE /api/employees/:id", () => {
 
     expect(statusCode).toEqual(404);
     expect(response).toEqual({
-      error: "No employee with id 420 is found",
+      error: "No tribes with id 420 is found",
     });
   });
 
   it("should return validation error when id is not number", async () => {
     const res = await app.inject({
-      url: "/api/employees/punk",
-      method: "DELETE",
+      url: "/api/tribes/punk",
+      method: "GET",
     });
 
     const response = res.json();

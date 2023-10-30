@@ -31,27 +31,27 @@ describe("GET /api/reports/employees", () => {
     const response = res.json();
 
     expect(response[0]).toEqual({
-        tribe_name: "Internstellar",
-        employees: [
-            {
-                id: 1,
-                name: "Cooper",
-                title: "Software Engineer",
-                tribe_id: 1
-            },
-            {
-                id: 2,
-                name: "Murph",
-                title: "Software Engineer",
-                tribe_id: 1
-            },
-            {
-                id: 3,
-                name: "TARS",
-                title: "Designer",
-                tribe_id: 1
-            },
-        ],
+      tribe_name: "Internstellar",
+      employees: [
+        {
+          id: 1,
+          name: "Cooper",
+          title: "Software Engineer",
+          tribe_id: 1,
+        },
+        {
+          id: 2,
+          name: "Murph",
+          title: "Software Engineer",
+          tribe_id: 1,
+        },
+        {
+          id: 3,
+          name: "TARS",
+          title: "Designer",
+          tribe_id: 1,
+        },
+      ],
     });
   });
 });

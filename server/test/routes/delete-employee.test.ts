@@ -3,7 +3,7 @@ import getTestFastify from "../test-fastify";
 
 const app = getTestFastify();
 
-describe("GET /api/employees/:id", () => {
+describe("DELETE /api/employees/:id", () => {
   beforeEach(async () => {
     await generateTestDb(app);
   });
@@ -12,30 +12,23 @@ describe("GET /api/employees/:id", () => {
     await destroyTestDb(app);
   });
 
-  it("should return Employee DTO by id", async () => {
+  it("should delete Employee DTO by id", async () => {
     const res = await app.inject({
       url: "/api/employees/1",
-      method: "GET",
+      method: "DELETE",
     });
 
     const response = res.json();
 
     expect(response).toEqual({
-      id: 1,
-      name: "Cooper",
-      title: "Software Engineer",
-      tribe: {
-        id: 1,
-        name: "Internstellar",
-        department: "Other Engineering",
-      },
+      success: true,
     });
   });
 
   it("should return 404 when no Employee found", async () => {
     const res = await app.inject({
       url: "/api/employees/420",
-      method: "GET",
+      method: "DELETE",
     });
 
     const response = res.json();
@@ -50,7 +43,7 @@ describe("GET /api/employees/:id", () => {
   it("should return validation error when id is not number", async () => {
     const res = await app.inject({
       url: "/api/employees/punk",
-      method: "GET",
+      method: "DELETE",
     });
 
     const response = res.json();

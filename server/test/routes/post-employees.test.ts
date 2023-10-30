@@ -16,16 +16,17 @@ describe("POST /api/employees", () => {
     const res = await app.inject({
       url: "/api/employees",
       method: "POST",
-      body:{
+      body: {
         name: "Aaaaaaaaa",
         title: "Intern",
-        tribe_id: 1
+        tribe_id: 1,
       },
     });
 
     const response = res.json();
     expect(response).toEqual({
-        success: true
-      });
+      success: true,
+      id: [11],
+    });
   });
 });

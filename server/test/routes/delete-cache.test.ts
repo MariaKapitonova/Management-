@@ -1,3 +1,4 @@
+import { afterEach, beforeEach } from "node:test";
 import { destroyTestDb, generateTestDb } from "../test-db";
 import getTestFastify from "../test-fastify";
 
@@ -21,7 +22,7 @@ describe("DELETE /cache", () => {
     const response = res.json();
 
     expect(response).toEqual({
-      success: true
+      success: true,
     });
   });
 });
