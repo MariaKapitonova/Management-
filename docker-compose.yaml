@@ -1,9 +1,11 @@
 version: "3"
 
 services:
-  app:
-    build: .
-    container_name: employees-app
+  employees-app-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: employees-app-server
     ports:
       - 3002:3000
     environment:
@@ -17,6 +19,8 @@ services:
     depends_on:
       - mysql
       - redis
+    networks:
+      - employees-network
   mysql:
     image: mysql:latest
     container_name: employees-db
@@ -24,9 +28,28 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=password
+    networks:
+      - employees-network
   redis:
     image: redis:latest
     container_name: employees-redis
     ports:
       - 6379:6379
     command: redis-server
+    networks:
+      - employees-network
+  employees-app-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: employees-app-client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - employees-app-server
+    networks:
+      - employees-network
+
+networks:
+  employees-network:
+    driver: bridge
