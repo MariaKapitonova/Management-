@@ -1,0 +1,28 @@
+.navbar-brand {
+    font-size: 1.5rem !important;
+  }
+  
+  .center-item {
+    padding: 22% 0%;
+    text-align: center;
+  }
+  
+  .center-table {
+    padding: 2% 0%;
+    text-align: center;
+  }
+  .headerPosition{
+    margin-left:2% ;
+  }
+  .headerChildPosition{
+    margin-left:2% ;
+  }
+  
+  .titles {
+    padding: 4% 0%;
+    text-align: center;
+  }
+  
+  .tableTr:hover {
+    background-color: #e7f9e7;
+  }
