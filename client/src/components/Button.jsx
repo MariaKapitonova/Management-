@@ -6,7 +6,11 @@ export default function MyButton({ text, color }) {
   const dispatch = useDispatch();
   return (
     <>
-      <Button variant={color} onClick={() => dispatch(handleShowAdd())}>
+      <Button
+        className="buttonCentered"
+        variant={color}
+        onClick={() => dispatch(handleShowAdd())}
+      >
         {text}
       </Button>
     </>

@@ -1,7 +1,7 @@
 .navbar-brand {
     font-size: 1.5rem !important;
   }
-  
+
   .center-item {
     padding: 22% 0%;
     text-align: center;
@@ -21,8 +21,21 @@
   .titles {
     padding: 4% 0%;
     text-align: center;
+    margin-top: 4% ;
   }
   
   .tableTr:hover {
     background-color: #e7f9e7;
+  }
+
+  .buttonCentered{
+    position: fixed;
+    bottom: 20px;
+    transform: translate(-50%, 50%);
+  }
+  .narvBarFixed {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
   }

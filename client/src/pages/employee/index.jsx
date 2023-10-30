@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/Spinner.jsx";
 import AddEmployeeModal from "../../components/employees/AddEmployeeModal.jsx";
 import EditEmployeeModal from "../../components/employees/EditEmployeeModal.jsx";
-import instance from "../../index.js";
-import { fetchEmployees } from "../../store/actions/employees.js";
-import { loadOnDelete } from "../../store/slices/employeesSlice.js";
+import {
+  deleteEmployee,
+  fetchEmployees,
+} from "../../store/actions/employees.js";
+
+import ScrollToTop from "react-scroll-to-top";
 
 export default function EmployeesTable() {
   const dispatch = useDispatch();
@@ -15,20 +18,9 @@ export default function EmployeesTable() {
   const employeesList = useSelector((store) => store.employees.employeesList);
   const loading = useSelector((store) => store.employees.loading);
 
-  const handleDelete = async (id) => {
-    try {
-      await instance.delete(`/employees/${id}`);
-      const list = employeesList.filter((item) => item.id !== id);
-      dispatch(loadOnDelete(list));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
-
   return (
     <>
       <div className="container">
@@ -36,6 +28,7 @@ export default function EmployeesTable() {
           <h1>Employees</h1>
         </div>
         <div className="center-table">
+          <ScrollToTop />
           <Table bordered hover>
             <thead>
               <tr className="table-success">
@@ -57,9 +50,9 @@ export default function EmployeesTable() {
                     <td>{item.tribe}</td>
                     <td>
                       <Button
-                        onClick={() => {
-                          handleDelete(item.id);
-                        }}
+                        onClick={() =>
+                          dispatch(deleteEmployee(item.id), employeesList)
+                        }
                         variant="danger"
                         size="sm"
                       >

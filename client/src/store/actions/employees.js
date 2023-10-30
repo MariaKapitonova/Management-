@@ -53,3 +53,16 @@ export function putEmployees(values, id) {
     }
   };
 }
+
+export function deleteEmployee(id, list) {
+  return async (dispatch) => {
+    try {
+      await instance.delete(`/employees/${id}`);
+      console.log(`employee with id ${id} has been deleted from the database`);
+      dispatch(fetchEmployees());
+    } catch (error) {
+      dispatch(loadEmployeesFailure());
+      console.log(error);
+    }
+  };
+}

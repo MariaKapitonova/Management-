@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 export const employeesSlice = createSlice({
   name: "employees",
   initialState: {
@@ -26,12 +25,12 @@ export const employeesSlice = createSlice({
     },
   },
 });
-
 export const {
   loadEmployees,
   loadEmployeesSuccess,
   loadEmployeesFailure,
   loadOnDelete,
+  loadOnDeleteFailure,
   loadOnPost,
 } = employeesSlice.actions;
 

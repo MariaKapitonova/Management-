@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import logo from "../../../public/frog.svg";
+import logo from "../../frog.svg";
 import "../../style.css";
 
 function MainPage() {
