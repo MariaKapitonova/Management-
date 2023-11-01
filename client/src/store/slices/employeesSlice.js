@@ -13,12 +13,17 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.employeesList = action.payload;
     },
+    postEmployeeSuccess: (state, action)=>{
+      state.loading = false;
+      state.employeesList = [...state.employeesList, action.payload];
+    },
     loadEmployeesFailure: (state) => {
       state.loading = false;
     },
     loadOnDelete: (state, action) => {
       state.loading = false;
-      state.employeesList = action.payload;
+      const updatedList = state.employeesList.filter ((employee)=>employee.id !== action.payload);
+      state.employeesList = updatedList;
     },
     loadOnPost: (state, action) => {
       state.loading = false;
@@ -32,6 +37,8 @@ export const {
   loadOnDelete,
   loadOnDeleteFailure,
   loadOnPost,
+  postEmployeeSuccess,
+  putEmployeeSuccess,
 } = employeesSlice.actions;
 
 export default employeesSlice.reducer;
