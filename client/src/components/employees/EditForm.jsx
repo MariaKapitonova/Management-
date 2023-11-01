@@ -4,11 +4,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployees, putEmployees } from "../../store/actions/employees.js";
-import { closeEdit } from "../../store/actions/modals";
+import { putEmployees } from "../../store/actions/employees.js";
 import { fetchTribes } from "../../store/actions/tribes.js";
 
-export default function EditForm({ item }) {
+export default function EditForm({ item, handleClose }) {
   const dispatch = useDispatch();
   const tribeList = useSelector((store) => store.tribes.tribeList);
 
@@ -41,7 +40,6 @@ export default function EditForm({ item }) {
           }
         });
         dispatch(putEmployees(values, item.id));
-        dispatch(fetchEmployees());
         resetForm();
       } catch (error) {
         console.error(error);
@@ -92,7 +90,7 @@ export default function EditForm({ item }) {
             type="submit"
             variant="success"
             disabled={Object.keys(formik.errors).length < 0 || !formik.dirty}
-            onClick={() => dispatch(closeEdit())}
+            onClick={handleClose}
           >
             Save Changes
           </Button>
