@@ -3,6 +3,8 @@ import {
   loadEmployees,
   loadEmployeesFailure,
   loadEmployeesSuccess,
+  loadOnDelete,
+  postEmployeeSuccess,
 } from "../slices/employeesSlice";
 
 export function fetchEmployees() {
@@ -28,9 +30,9 @@ export function postEmployees(values) {
         title: values.title,
         tribe_id: values.tribe,
       });
-      const data = response.data;
-      dispatch(fetchEmployees());
-      return data;
+      const newEmployee = await instance.get(`/employees/${response.data.id}`);
+      const newEmployeeParsed = {...newEmployee, tribe: newEmployee.tribe.name};
+      dispatch(postEmployeeSuccess(newEmployeeParsed));
     } catch (error) {
       dispatch(loadEmployeesFailure());
     }
@@ -45,21 +47,22 @@ export function putEmployees(values, id) {
         title: values.title,
         tribe_id: values.tribe,
       });
-      const data = response.data;
+
+      if (response.data.success === true){
+        //conditioning whether there is any new update based on server's response
       dispatch(fetchEmployees());
-      return data;
+      }
     } catch (error) {
       dispatch(loadEmployeesFailure());
     }
   };
 }
 
-export function deleteEmployee(id, list) {
+export function deleteEmployee(id) {
   return async (dispatch) => {
     try {
       await instance.delete(`/employees/${id}`);
-      console.log(`employee with id ${id} has been deleted from the database`);
-      dispatch(fetchEmployees());
+      dispatch(loadOnDelete(id));
     } catch (error) {
       dispatch(loadEmployeesFailure());
       console.log(error);
