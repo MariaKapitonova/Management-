@@ -51,9 +51,11 @@ export async function getEmployees(
       "tribes.department as tribe.department"
     );
 
-  if (search.name) employees.whereLike("employees.name", `%${search.name}%`);
-  if (search.title) employees.whereLike("employees.title", `%${search.title}%`);
-  if (search.tribe) employees.whereLike("tribes.name", `%${search.tribe}%`);
+  if (search.name)
+    employees.where("employees.name", "LIKE", `%${search.name}%`);
+  if (search.title)
+    employees.where("employees.title", "LIKE", `%${search.title}%`);
+  if (search.tribe) employees.where("tribes.name", "LIKE", `%${search.tribe}%`);
 
   const employeesQueryResult = await employees;
   const result: EmployeeDTO[] = employeesQueryResult.map(formatEmployeeDTO);
